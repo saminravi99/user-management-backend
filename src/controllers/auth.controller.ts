@@ -14,22 +14,21 @@ export const verifyOtp = asyncHandler(async (req: Request, res: Response) => {
     const { email, otp } = req.body;
     const result = await authService.verifyOtp(email, otp);
 
-    // Set tokens in HTTP-only cookies
     const cookieOptions = {
-        httpOnly: true, // Prevents JavaScript access
-        secure: false, // Set to false for HTTP, true for HTTPS
-        sameSite: 'lax' as const, // 'lax' works for same-site requests over HTTP
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax' as const,
         path: '/',
     };
 
     res.cookie('accessToken', result.accessToken, {
         ...cookieOptions,
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
+        maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.cookie('refreshToken', result.refreshToken, {
         ...cookieOptions,
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
@@ -42,23 +41,21 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const result = await authService.login(email, password);
 
-    // Set tokens in HTTP-only cookies
-    // For production with HTTPS, set secure: true and sameSite: 'none'
     const cookieOptions = {
-        httpOnly: true, // Prevents JavaScript access
-        secure: false, // Set to false for HTTP, true for HTTPS
-        sameSite: 'lax' as const, // 'lax' works for same-site requests over HTTP
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax' as const,
         path: '/',
     };
 
     res.cookie('accessToken', result.accessToken, {
         ...cookieOptions,
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
+        maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.cookie('refreshToken', result.refreshToken, {
         ...cookieOptions,
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
@@ -68,7 +65,6 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const refreshToken = asyncHandler(async (req: Request, res: Response) => {
-    // Get refresh token from body or cookie
     const refreshToken = req.body.refreshToken || req.cookies.refreshToken;
 
     if (!refreshToken) {
@@ -79,22 +75,21 @@ export const refreshToken = asyncHandler(async (req: Request, res: Response) => 
 
     const result = await authService.refreshToken(refreshToken);
 
-    // Set new tokens in HTTP-only cookies
     const cookieOptions = {
         httpOnly: true,
-        secure: false, // Set to false for HTTP, true for HTTPS
+        secure: false,
         sameSite: 'lax' as const,
         path: '/',
     };
 
     res.cookie('accessToken', result.accessToken, {
         ...cookieOptions,
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
+        maxAge: 24 * 60 * 60 * 1000,
     });
 
     res.cookie('refreshToken', result.refreshToken, {
         ...cookieOptions,
-        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({
@@ -113,7 +108,6 @@ export const resendOtp = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const logout = asyncHandler(async (_req: Request, res: Response) => {
-    // Clear authentication cookies
     const cookieOptions = {
         httpOnly: true,
         secure: false,

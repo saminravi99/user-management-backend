@@ -15,8 +15,6 @@ import routes from './routes';
 export const createApp = (): Application => {
     const app = express();
 
-    // Trust proxy - required when behind nginx reverse proxy
-    // Trust the first proxy (nginx container)
     app.set('trust proxy', 1);
 
     app.use(helmet());

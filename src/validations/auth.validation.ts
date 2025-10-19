@@ -9,7 +9,6 @@ export const signupSchema = z.object({
             .string()
             .min(10, 'Contact number must be at least 10 digits')
             .max(15, 'Contact number must not exceed 15 digits'),
-        // role is NOT accepted from body - always set to 'user' in service
     }),
 });
 

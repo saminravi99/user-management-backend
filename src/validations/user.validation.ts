@@ -38,7 +38,6 @@ export const deleteUserSchema = z.object({
     }),
 });
 
-// Schema for updating own profile (name, password, contactNumber)
 export const updateProfileSchema = z.object({
     body: z.object({
         name: z.string().min(2, 'Name must be at least 2 characters').optional(),
@@ -51,14 +50,12 @@ export const updateProfileSchema = z.object({
     }),
 });
 
-// Schema for requesting email change (requires OTP verification)
 export const requestEmailChangeSchema = z.object({
     body: z.object({
         newEmail: z.string().email('Invalid email address'),
     }),
 });
 
-// Schema for verifying email change with OTP
 export const verifyEmailChangeSchema = z.object({
     body: z.object({
         newEmail: z.string().email('Invalid email address'),
@@ -66,7 +63,6 @@ export const verifyEmailChangeSchema = z.object({
     }),
 });
 
-// Schema for admin/superadmin to change user role
 export const changeUserRoleSchema = z.object({
     params: z.object({
         id: z.string().regex(/^[0-9a-fA-F]{24}$/, 'Invalid user ID'),

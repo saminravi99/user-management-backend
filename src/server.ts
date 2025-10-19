@@ -13,7 +13,6 @@ const startServer = async () => {
         await connectDatabase();
         await connectRedis();
 
-        // Seed super admin after database connection
         await seedSuperAdmin();
 
         const app = createApp();

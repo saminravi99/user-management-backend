@@ -38,7 +38,6 @@ export const deleteUser = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
-// Update own profile (name, password, contactNumber)
 export const updateProfile = asyncHandler(async (req: Request, res: Response) => {
     const authReq = req as AuthRequest;
     const userId = authReq.user!.userId;
@@ -52,7 +51,6 @@ export const updateProfile = asyncHandler(async (req: Request, res: Response) =>
     });
 });
 
-// Get own profile
 export const getProfile = asyncHandler(async (req: Request, res: Response) => {
     const authReq = req as AuthRequest;
     const userId = authReq.user!.userId;
@@ -65,7 +63,6 @@ export const getProfile = asyncHandler(async (req: Request, res: Response) => {
     });
 });
 
-// Request email change (sends OTP to new email)
 export const requestEmailChange = asyncHandler(async (req: Request, res: Response) => {
     const authReq = req as AuthRequest;
     const userId = authReq.user!.userId;
@@ -73,7 +70,6 @@ export const requestEmailChange = asyncHandler(async (req: Request, res: Respons
 
     await userService.requestEmailChange(userId, newEmail);
 
-    // Generate and send OTP to new email
     const otp = await otpService.generateAndStoreOtp(newEmail);
     await emailService.sendOtpEmail(newEmail, otp);
 
@@ -83,13 +79,11 @@ export const requestEmailChange = asyncHandler(async (req: Request, res: Respons
     });
 });
 
-// Verify email change with OTP
 export const verifyEmailChange = asyncHandler(async (req: Request, res: Response) => {
     const authReq = req as AuthRequest;
     const userId = authReq.user!.userId;
     const { newEmail, otp } = req.body;
 
-    // Verify OTP
     const isValid = await otpService.verifyOtp(newEmail, otp);
     if (!isValid) {
         const error: any = new Error('Invalid or expired OTP');
@@ -97,7 +91,6 @@ export const verifyEmailChange = asyncHandler(async (req: Request, res: Response
         throw error;
     }
 
-    // Update email
     const user = await userService.verifyEmailChange(userId, newEmail);
 
     res.status(200).json({
@@ -107,7 +100,6 @@ export const verifyEmailChange = asyncHandler(async (req: Request, res: Response
     });
 });
 
-// Admin/SuperAdmin: Change user role
 export const changeUserRole = asyncHandler(async (req: Request, res: Response) => {
     const authReq = req as AuthRequest;
     const requesterId = authReq.user!.userId;

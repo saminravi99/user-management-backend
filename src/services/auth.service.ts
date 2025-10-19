@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { CreateUserInput } from '../interfaces/user.interface';
 import * as emailService from './email.service';
 import * as otpService from './otp.service';
@@ -6,7 +5,6 @@ import * as tokenService from './token.service';
 import * as userService from './user.service';
 
 export const signup = async (userData: CreateUserInput) => {
-    // Force role to 'user' - cannot be set from request body
     const user = await userService.createUser({
         ...userData,
         role: 'user',

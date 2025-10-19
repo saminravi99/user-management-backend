@@ -14,14 +14,11 @@ import {
 
 const router = Router();
 
-// All routes require authentication
 router.use(authenticate);
 
-// Profile routes (user's own profile)
 router.get('/profile/me', userController.getProfile);
 router.patch('/profile/me', validateRequest(updateProfileSchema), userController.updateProfile);
 
-// Email change routes (requires OTP verification)
 router.post(
     '/profile/email/request',
     validateRequest(requestEmailChangeSchema),
@@ -33,7 +30,6 @@ router.post(
     userController.verifyEmailChange,
 );
 
-// Admin routes - manage other users
 router.get('/', requireAdmin, userController.getAllUsers);
 router.get('/:id', requireAdmin, validateRequest(getUserByIdSchema), userController.getUserById);
 router.patch('/:id', requireAdmin, validateRequest(updateUserSchema), userController.updateUser);
@@ -44,7 +40,6 @@ router.delete(
     userController.deleteUser,
 );
 
-// Role management - admin and superadmin only
 router.patch(
     '/:id/role',
     requireAdmin,

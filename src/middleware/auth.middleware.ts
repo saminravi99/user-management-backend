@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 import { UserRole } from '../interfaces/user.interface';
 import * as tokenService from '../services/token.service';
@@ -14,18 +15,15 @@ export const authenticate = (req: Request, _res: Response, next: NextFunction) =
     try {
         let token: string | undefined;
 
-        // First, try to get token from Authorization header
         const authHeader = req.headers.authorization;
         if (authHeader && authHeader.startsWith('Bearer ')) {
             token = authHeader.substring(7);
         }
 
-        // If no token in header, try to get from cookies
         if (!token && req.cookies && req.cookies.accessToken) {
             token = req.cookies.accessToken;
         }
 
-        // If still no token, throw error
         if (!token) {
             const error: any = new Error('No token provided');
             error.statusCode = 401;
@@ -37,7 +35,6 @@ export const authenticate = (req: Request, _res: Response, next: NextFunction) =
         (req as AuthRequest).user = decoded;
 
         next();
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         const err: any = new Error('Invalid or expired token');
         err.statusCode = 401;
@@ -45,7 +42,6 @@ export const authenticate = (req: Request, _res: Response, next: NextFunction) =
     }
 };
 
-// Middleware to check if user is admin or superadmin
 export const requireAdmin = (req: Request, _res: Response, next: NextFunction) => {
     const authReq = req as AuthRequest;
 
@@ -64,7 +60,6 @@ export const requireAdmin = (req: Request, _res: Response, next: NextFunction) =
     next();
 };
 
-// Middleware to check if user is superadmin
 export const requireSuperAdmin = (req: Request, _res: Response, next: NextFunction) => {
     const authReq = req as AuthRequest;
 
